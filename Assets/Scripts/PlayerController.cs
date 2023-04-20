@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     private Rigidbody2D _rigidBody;
     private Animator _animatorPlayer;
     private Animator _animatorSword;
@@ -20,6 +22,17 @@ public class PlayerController : MonoBehaviour
     private const int PlayerDown = 0;
     private const int PlayerSide = 1;
     private const int PlayerUp = 2;
+
+    void Awake()
+    {
+        if ((Instance != null) && (Instance != this))
+        {
+            Destroy(this);
+            return;
+        }
+
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
