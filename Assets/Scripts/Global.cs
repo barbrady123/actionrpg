@@ -5,6 +5,8 @@ public static class Global
         public const string AxisHorizontal = "Horizontal";
 
         public const string AxisVertical = "Vertical";
+
+        public const int LeftButton = 0;
     }
 
     public static class Tags
