@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
 
 public class EnemyController : MonoBehaviour
@@ -17,6 +16,13 @@ public class EnemyController : MonoBehaviour
 
     private Vector2 _moveDirection;
 
+    public bool ShouldChase;
+    private bool _isChasing;
+
+    public float ChaseSpeed;
+    public float RangeToChase;
+    public float WaitAfterHitting;
+
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
@@ -28,6 +34,12 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
+        if (_isChasing)
+        {
+            Chase();
+            return;
+        }
+
         if (_timer > 0)
         {
             _timer -= Time.deltaTime;
@@ -50,20 +62,41 @@ public class EnemyController : MonoBehaviour
             {
                 _moveDirection = new Vector2(
                     Random.Range(-1.0f, 1.0f),
-                    Random.Range(-1.0f, 1.0f));
+                    Random.Range(-1.0f, 1.0f)).normalized * this.MoveSpeed;
             }
         }
 
         _animator.SetBool("isMoving", _isMoving);
     }
 
+    private void Chase()
+    {
+        _moveDirection = (PlayerController.Instance.transform.position - transform.position).normalized * this.ChaseSpeed;
+        Move();
+    }
+
     private void Move()
     {
-        _rigidBody.velocity = _moveDirection.normalized;
+        _rigidBody.velocity = _moveDirection;
 
         transform.position = new Vector3(
             Mathf.Clamp(transform.position.x, _area.bounds.min.x + 1f, _area.bounds.max.x - 1f),
             Mathf.Clamp(transform.position.y, _area.bounds.min.y + 1f, _area.bounds.max.y - 1f),
             transform.position.z);
+
+        if (!this.ShouldChase)
+            return;
+
+        _isChasing = Vector3.Distance(transform.position, PlayerController.Instance.transform.position) <= this.RangeToChase;
+    }
+
+    private void OnCollisionEnter2D(Collision2D obj)
+    {
+        if (obj.gameObject.tag != Global.Tags.Player)
+            return;
+
+        _isChasing = false;
+        _isMoving = false;
+        _timer = this.WaitAfterHitting;
     }
 }
