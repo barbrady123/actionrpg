@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
                     _spriteRenderer.transform.localScale.y,
                     _spriteRenderer.transform.localScale.z);
         }
-        else
+        else if (rawY != 0f)
         {
             _spriteRenderer.transform.localScale = Vector3.one;
             _spriteRenderer.sprite = this.PlayerDirectionSprites[(rawY > 0f) ? PlayerController.PlayerUp : PlayerController.PlayerDown];
