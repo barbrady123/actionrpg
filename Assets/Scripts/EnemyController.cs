@@ -95,8 +95,13 @@ public class EnemyController : MonoBehaviour
         if (obj.gameObject.tag != Global.Tags.Player)
             return;
 
+        if (!_isChasing)
+            return;
+
         _isChasing = false;
         _isMoving = false;
         _timer = this.WaitAfterHitting;
+        
+        PlayerController.Instance.Knockback(_rigidBody.velocity);
     }
 }

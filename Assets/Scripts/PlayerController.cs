@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -23,6 +17,26 @@ public class PlayerController : MonoBehaviour
     private const int PlayerSide = 1;
     private const int PlayerUp = 2;
 
+    private bool _isKnockedBack;
+    private float _knockbackCounter;
+    private Vector2 _knockDir;
+
+    public float KnockbackTime;
+    public float KnockbackForce;
+
+    public GameObject HitEffectPrefab;
+    private GameObject _hitEffect;
+
+    public bool MoveEffectsWithPlayer;
+
+    public void Knockback(Vector2 direction)
+    {
+        _knockbackCounter = this.KnockbackTime;
+        _knockDir = direction;
+        _hitEffect = Instantiate(this.HitEffectPrefab, transform.position, Quaternion.identity);
+        _isKnockedBack = true;
+    }
+
     void Awake()
     {
         if ((Instance != null) && (Instance != this))
@@ -41,13 +55,20 @@ public class PlayerController : MonoBehaviour
         _animatorPlayer = GetComponent<Animator>();
         _animatorSword = transform.Find("SwordHolder").GetComponent<Animator>();
         _spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
-        _animatorSword.SetFloat("dirX", 0f);
-        _animatorSword.SetFloat("dirY", -1f);
+        _animatorSword.SetFloat(Global.Parameters.DirX, 0f);
+        _animatorSword.SetFloat(Global.Parameters.DirY, -1f);
+        _hitEffect = null;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_isKnockedBack)
+        {
+            UpdateKnockback();
+            return;
+        }
+
         float rawX = Input.GetAxisRaw(Global.Inputs.AxisHorizontal).Normalize();
         float rawY = Input.GetAxisRaw(Global.Inputs.AxisVertical).Normalize();
 
@@ -73,13 +94,31 @@ public class PlayerController : MonoBehaviour
 
         if ((rawX != 0) || (rawY != 0))
         {
-            _animatorSword.SetFloat("dirX", rawX);
-            _animatorSword.SetFloat("dirY", rawY);
+            _animatorSword.SetFloat(Global.Parameters.DirX, rawX);
+            _animatorSword.SetFloat(Global.Parameters.DirY, rawY);
         }
 
-        if (Input.GetMouseButtonDown(Global.Inputs.LeftButton))
+        if (Input.GetMouseButtonDown(Global.Inputs.LeftButton)) 
         {
-            _animatorSword.SetTrigger("Attack");
+            _animatorSword.SetTrigger(Global.Parameters.Triggers.Attack);
         }
+    }
+
+    void UpdateKnockback()
+    {
+        _rigidBody.velocity = _knockDir * this.KnockbackForce;
+        _knockbackCounter -= Time.deltaTime;
+        if (this.MoveEffectsWithPlayer && (_hitEffect != null))
+        {
+            _hitEffect.transform.position = transform.position;
+        }
+
+        if (_knockbackCounter <= 0f)
+        {
+            _isKnockedBack = false;
+            _knockDir = Vector2.zero;
+            return;
+        }
+
     }
 }

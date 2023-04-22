@@ -17,5 +17,14 @@ public static class Global
     public static class Parameters
     {
         public const string Speed = "Speed";
+
+        public const string DirX = "dirX";
+
+        public const string DirY = "dirY";
+
+        public static class Triggers
+        {
+            public const string Attack = "Attack";
+        }
     }
 }

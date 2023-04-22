@@ -270,7 +270,7 @@ MonoBehaviour:
   ShouldChase: 1
   ChaseSpeed: 4
   RangeToChase: 10
-  WaitAfterHitting: 1
+  WaitAfterHitting: 2
 --- !u!50 &134724278
 Rigidbody2D:
   serializedVersion: 4
@@ -11064,6 +11064,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 12ff971a94504e64b972d3df8684bc9d, type: 3}
   - {fileID: 21300000, guid: 96cc55856354e7d4a82c7933a5b84e0d, type: 3}
   - {fileID: 21300000, guid: 0a55318f321810a45b36835f9e397df5, type: 3}
+  KnockbackTime: 0.2
+  KnockbackForce: 5
+  HitEffectPrefab: {fileID: 7509593508126900057, guid: e6b20918ed7cf934bb0a6f8ed92ad9e3, type: 3}
+  MoveEffectsWithPlayer: 1
 --- !u!4 &784892649
 Transform:
   m_ObjectHideFlags: 0
