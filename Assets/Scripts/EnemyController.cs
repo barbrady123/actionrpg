@@ -23,6 +23,25 @@ public class EnemyController : MonoBehaviour
     public float RangeToChase;
     public float WaitAfterHitting;
 
+    public int DamageMin;
+    public int DamageMax;
+
+    private bool _isKnockedBack;
+    private float _knockbackCounter;
+    private Vector2 _knockDir;
+
+    public float KnockbackTime;
+    public float KnockbackForce;
+
+    public void Knockback(Vector2 direction)
+    {
+        _knockbackCounter = this.KnockbackTime;
+        _knockDir = direction;
+        _isKnockedBack = true;
+        _isMoving = false;
+        _isChasing = false;
+    }
+
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
@@ -34,6 +53,12 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
+        if (_isKnockedBack)
+        {
+            UpdateKnockback();
+            return;
+        }
+
         if (_isChasing)
         {
             Chase();
@@ -87,7 +112,7 @@ public class EnemyController : MonoBehaviour
         if (!this.ShouldChase)
             return;
 
-        _isChasing = Vector3.Distance(transform.position, PlayerController.Instance.transform.position) <= this.RangeToChase;
+        _isChasing = PlayerController.Instance.gameObject.activeInHierarchy && (Vector3.Distance(transform.position, PlayerController.Instance.transform.position) <= this.RangeToChase);
     }
 
     private void OnCollisionEnter2D(Collision2D obj)
@@ -102,6 +127,24 @@ public class EnemyController : MonoBehaviour
         _isMoving = false;
         _timer = this.WaitAfterHitting;
         
+        PlayerHealthController.Instance.Damage(GenerateDamage());
         PlayerController.Instance.Knockback(_rigidBody.velocity);
+    }
+
+    private int GenerateDamage() => Random.Range(this.DamageMin, this.DamageMax + 1);
+
+    void UpdateKnockback()
+    {
+        _rigidBody.velocity = _knockDir * this.KnockbackForce;
+        _knockbackCounter -= Time.deltaTime;
+
+        if (_knockbackCounter <= 0f)
+        {
+            _isKnockedBack = false;
+            _knockDir = Vector2.zero;
+            _timer = 1.0f;
+            return;
+        }
+
     }
 }

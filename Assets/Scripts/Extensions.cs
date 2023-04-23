@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 public static class Extensions
 {
     public static float Normalize(this float val)
@@ -12,5 +15,13 @@ public static class Extensions
         }
 
         return 0;
+    }
+
+    public static void SetAllActive(this IEnumerable<GameObject> items, bool isActive = true)
+    {
+        foreach (var item in items)
+        {
+            item.SetActive(isActive);
+        }
     }
 }
