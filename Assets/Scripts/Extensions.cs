@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class Extensions
@@ -24,4 +26,6 @@ public static class Extensions
             item.SetActive(isActive);
         }
     }
+
+    public static T ChooseRandomElement<T>(this IEnumerable<T> items) => items.Skip(Random.Range(0, items.Count())).First();
 }

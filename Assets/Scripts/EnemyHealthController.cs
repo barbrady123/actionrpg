@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyHealthController : MonoBehaviour
@@ -7,6 +8,10 @@ public class EnemyHealthController : MonoBehaviour
     public GameObject DeathAnimation;
 
     public int CurrentHP;
+
+    public GameObject[] PickupPrefabs;
+
+    public int PickupDropChance;
 
     void Start()
     {
@@ -32,6 +37,15 @@ public class EnemyHealthController : MonoBehaviour
     private void Dead()
     {
         Instantiate(this.DeathAnimation, transform.position, Quaternion.identity);
+
+        if (this.PickupPrefabs?.Any() ?? false)
+        {
+            if (Global.Success(this.PickupDropChance))
+            {
+                Instantiate(this.PickupPrefabs.ChooseRandomElement(), transform.position, Quaternion.identity);
+            }
+        }
+
         Destroy(gameObject);
     }
 }

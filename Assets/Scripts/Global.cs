@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public static class Global
 {
     public static class Inputs
@@ -29,4 +31,6 @@ public static class Global
             public const string Attack = "Attack";
         }
     }
+
+    public static bool Success(int percentChance) => (Random.Range(0, 100) < percentChance);
 }

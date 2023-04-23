@@ -216,3 +216,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeathAnimation: {fileID: 3630731770804964516, guid: 2ac42f6544648fc4d93f26f374159967, type: 3}
   CurrentHP: 20
+  PickupPrefabs:
+  - {fileID: 3299525480807944271, guid: 283baa06b3b431c41853a943911323b0, type: 3}
+  PickupDropChance: 50

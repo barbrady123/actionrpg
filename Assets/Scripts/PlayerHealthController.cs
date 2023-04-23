@@ -57,6 +57,11 @@ public class PlayerHealthController : MonoBehaviour
         return actualDmg;
     }
 
+    public void AddHealth(int health)
+    {
+        this.CurrentHP = Math.Min(this.CurrentHP + health, this.MaxHP);
+    }
+
     private void Dead()
     {
         Instantiate(this.DeathAnimation, transform.position, Quaternion.identity);
