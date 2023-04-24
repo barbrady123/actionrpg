@@ -2842,10 +2842,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4437536660124822767, guid: 6f3da6c1daa6fc5468b88dcc00f633a7, type: 3}
-      propertyPath: Transitions.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437536660124822767, guid: 6f3da6c1daa6fc5468b88dcc00f633a7, type: 3}
       propertyPath: Transitions.Array.data[0]
       value: 
       objectReference: {fileID: 261901646}
