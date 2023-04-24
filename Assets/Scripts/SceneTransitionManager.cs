@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class SceneTransitionManager : MonoBehaviour
 {
-    public GameObject[] Transitions;
-
     void Start()
     {
-        if (String.IsNullOrWhiteSpace(SceneInit.StartTransition))
+        if (String.IsNullOrWhiteSpace(SceneInit.EntryTransition))
             return;
 
-        var target = this.Transitions.Select(x => x.GetComponent<SceneTransition>()).Single(x => x.Name == SceneInit.StartTransition);
+        var target = GetComponentsInChildren<SceneTransition>().FirstOrDefault(x => x.Name == SceneInit.EntryTransition);
+        if (target == null)
+        {
+            Debug.LogError($"Unknown transition name encountered: '{SceneInit.EntryTransition}'");
+        }
 
-        PlayerController.Instance.transform.position = target.transform.position;
-        SceneInit.StartTransition = null;
+        PlayerController.Instance.transform.position = target.transform.position + target.EntryOffset;
+        SceneInit.EntryTransition = null;
+    }
+
+    private void Update()
+    {
+        if (SceneInit.Delay > 0f)
+        {
+            SceneInit.Delay -= Time.deltaTime;
+        }
     }
 }
