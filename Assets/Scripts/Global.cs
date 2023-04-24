@@ -7,6 +7,8 @@ public static class Global
         public const string MainMenu = "MainMenu";
 
         public const string Village = "Village";
+
+        public const string Dungeon1 = "Dungeon1";
     }
 
     public static class Inputs

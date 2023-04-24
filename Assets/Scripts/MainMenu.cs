@@ -15,6 +15,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
+        SceneInit.StartTransition = null;
         SceneManager.LoadScene(Global.Scenes.Village);
     }
 

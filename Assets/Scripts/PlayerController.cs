@@ -49,6 +49,17 @@ public class PlayerController : MonoBehaviour
 
     public int Coins;
 
+    void Awake()
+    {
+        if ((Instance != null) && (Instance != this))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
     public void SpinComplete() { _isSpinning = false; }
 
     public void AddCoins(int value)
@@ -77,19 +88,7 @@ public class PlayerController : MonoBehaviour
         _dashTimer = this.DashDuration;
     }
 
-    void Awake()
-    {
-        if ((Instance != null) && (Instance != this))
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-    }
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _animatorPlayer = GetComponent<Animator>();
