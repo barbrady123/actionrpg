@@ -68,8 +68,8 @@ public class PlayerController : MonoBehaviour
         _isKnockedBack = true;
     }
 
-    public float TotalMoveSpeed() => 
-        this.BaseMoveSpeed * 
+    public float TotalMoveSpeed() =>
+        this.BaseMoveSpeed *
         ((_dashTimer > 0f) ? this.DashSpeedModifier : 1.0f);
 
     public void Dash()
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
     {
         if ((Instance != null) && (Instance != this))
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 
@@ -116,9 +116,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Handle this state better...
+        if (GameManager.Instance.IsPaused)
+            return;
+
+        if (GameManager.Instance.DialogActive)
+        {
+            StopMovement();
+            return;
+        }
+
         UpdateStamina();
 
         if (_isKnockedBack)
@@ -128,7 +137,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if (_dashTimer > 0f)
-        {            
+        {
             _dashTimer = Mathf.Max(_dashTimer - Time.deltaTime, 0f);
             _rigidBody.velocity = (new Vector2(_rigidBody.velocity.x, _rigidBody.velocity.y)).normalized * TotalMoveSpeed();
             return;
@@ -146,11 +155,11 @@ public class PlayerController : MonoBehaviour
 
         _rigidBody.velocity = move;
         _animatorPlayer.SetFloat(Global.Parameters.Speed, move.magnitude);
-        
+
         if (rawX != 0f)
         {
             _spriteRenderer.sprite = this.PlayerDirectionSprites[PlayerController.PlayerSide];
-            _spriteRenderer.transform.localScale = 
+            _spriteRenderer.transform.localScale =
                 new Vector3(
                     (rawX < 0f) ? -1f : 1f,
                     _spriteRenderer.transform.localScale.y,
@@ -173,24 +182,32 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(Global.Inputs.LeftButton) && (!_isSpinning))
         {
             _animatorSword.SetTrigger(Global.Parameters.Triggers.Attack);
+            AudioManager.Instance.PlaySFX(SFX.Attack);
         }
 
         if (Input.GetMouseButtonDown(Global.Inputs.RightButton) && (_spinCooldownTimer <= 0f) && (this.CurrentStamina >= this.SpinStaminaCost))
         {
             _animatorSword.SetTrigger(Global.Parameters.Triggers.Spin);
+            AudioManager.Instance.PlaySFX(SFX.Attack);
             _spinCooldownTimer = this.SpinCooldown;
             _isSpinning = true;
             this.AdjustStamina(-this.SpinStaminaCost);
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && (_dashTimer <= 0f) && (this.CurrentStamina >= this.DashStaminaCost))
-        {            
+        {
             _dashTimer = this.DashDuration;
             this.AdjustStamina(-this.DashStaminaCost);
         }
     }
 
-    void UpdateKnockback()
+    private void StopMovement()
+    {
+        _rigidBody.velocity = Vector2.zero;
+        _animatorPlayer.SetFloat(Global.Parameters.Speed, 0f);
+    }
+
+    private void UpdateKnockback()
     {
         _rigidBody.velocity = _knockDir * this.KnockbackForce;
         _knockbackCounter -= Time.deltaTime;

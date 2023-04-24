@@ -2,6 +2,13 @@ using UnityEngine;
 
 public static class Global
 {
+    public static class Scenes
+    {
+        public const string MainMenu = "MainMenu";
+
+        public const string Village = "Village";
+    }
+
     public static class Inputs
     {
         public const string AxisHorizontal = "Horizontal";
@@ -11,6 +18,8 @@ public static class Global
         public const int LeftButton = 0;
 
         public const int RightButton = 1;
+
+        public const string Fire1 = "Fire1";
     }
 
     public static class Tags

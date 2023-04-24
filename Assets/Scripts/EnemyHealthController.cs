@@ -15,7 +15,7 @@ public class EnemyHealthController : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     private void Update()
@@ -37,6 +37,7 @@ public class EnemyHealthController : MonoBehaviour
     private void Dead()
     {
         Instantiate(this.DeathAnimation, transform.position, Quaternion.identity);
+        AudioManager.Instance.PlaySFX(SFX.Death);
 
         if (this.PickupPrefabs?.Any() ?? false)
         {

@@ -19,6 +19,7 @@ public class CoinPickup : MonoBehaviour
         if (obj.tag != Global.Tags.Player)
             return;
 
+        AudioManager.Instance.PlaySFX(SFX.CoinPickup);
         PlayerController.Instance.AddCoins(this.Value);
         Destroy(gameObject);
     }

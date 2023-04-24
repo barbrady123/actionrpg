@@ -19,6 +19,7 @@ public class HealthPickup : MonoBehaviour
         if (obj.tag != Global.Tags.Player)
             return;
 
+        AudioManager.Instance.PlaySFX(SFX.HealthPickup);
         PlayerHealthController.Instance.AddHealth(this.Health);
         Destroy(gameObject);
     }

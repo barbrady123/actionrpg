@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -16,11 +17,13 @@ public class UIManager : MonoBehaviour
 
     public TMP_Text CoinText;
 
+    public GameObject PauseScreen;
+
     void Awake()
     {
         if ((Instance != null) && (Instance != this))
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 
@@ -29,7 +32,7 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -62,5 +65,21 @@ public class UIManager : MonoBehaviour
     public void UpdateCoinDisplay()
     {
         this.CoinText.text = PlayerController.Instance.Coins.ToString();
+    }
+
+    public void ResumeGame()
+    {
+        GameManager.Instance.GamePause(false);
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene(Global.Scenes.MainMenu);
+        Time.timeScale = 1f;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

@@ -20,7 +20,7 @@ public class PlayerHealthController : MonoBehaviour
     {
         if ((Instance != null) && (Instance != this))
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 
@@ -50,6 +50,8 @@ public class PlayerHealthController : MonoBehaviour
         if (_invincibilityTime > 0f)
             return 0;
 
+        AudioManager.Instance.PlaySFX(SFX.Hurt);
+
         int actualDmg = (this.CurrentHP >= dmg) ? dmg : this.CurrentHP;
         this.CurrentHP -= actualDmg;
         print($"Player took {actualDmg} damage...");
@@ -65,6 +67,7 @@ public class PlayerHealthController : MonoBehaviour
     private void Dead()
     {
         Instantiate(this.DeathAnimation, transform.position, Quaternion.identity);
+        AudioManager.Instance.PlaySFX(SFX.Death);
         gameObject.SetActive(false);
     }
 }
