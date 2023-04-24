@@ -9,6 +9,8 @@ public static class Global
         public const string AxisVertical = "Vertical";
 
         public const int LeftButton = 0;
+
+        public const int RightButton = 1;
     }
 
     public static class Tags
@@ -29,6 +31,8 @@ public static class Global
         public static class Triggers
         {
             public const string Attack = "Attack";
+
+            public const string Spin = "Spin";
         }
     }
 
