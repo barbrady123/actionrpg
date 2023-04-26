@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
         if (GameManager.Instance.IsPaused)
             return;
 
-        if (GameManager.Instance.DialogActive)
+        if (GameManager.Instance.DialogActive || UIManager.Instance.IsFading)
         {
             StopMovement();
             return;

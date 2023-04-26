@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
@@ -16,8 +15,7 @@ public class SceneTransition : MonoBehaviour
         if (!SceneInit.OkToTransition())
             return;
 
-        SceneInit.StartTransition(this.TargetTransition);
-        SceneManager.LoadScene(this.TargetScene);
+        SceneInit.StartTransition(this.TargetScene, this.TargetTransition);
     }
 
     private void OnTriggerExit2D(Collider2D obj)

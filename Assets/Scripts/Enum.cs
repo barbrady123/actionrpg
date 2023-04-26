@@ -18,3 +18,12 @@ public enum SFX
 
     StaminaPickup = 8
 }
+
+public enum FadeStatus
+{
+    None = 0,
+
+    ToBlack = 1,
+
+    FromBlack = 2
+}

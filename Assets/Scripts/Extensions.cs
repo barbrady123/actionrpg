@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class Extensions
 {
@@ -28,4 +28,6 @@ public static class Extensions
     }
 
     public static T ChooseRandomElement<T>(this IEnumerable<T> items) => items.Skip(Random.Range(0, items.Count())).First();
+
+    public static void SetAlpha(this Image img, float alpha) => img.color = new Color(img.color.r, img.color.g, img.color.b, alpha);
 }

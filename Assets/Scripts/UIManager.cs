@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
@@ -19,6 +20,12 @@ public class UIManager : MonoBehaviour
 
     public GameObject PauseScreen;
 
+    public GameObject FadeScreen;
+    private Image _fadeImage;
+
+    private float _fadeSpeed = 1.5f;
+    public FadeStatus FadeStatus;
+
     void Awake()
     {
         if ((Instance != null) && (Instance != this))
@@ -28,11 +35,13 @@ public class UIManager : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
     {
-
+        _fadeImage = this.FadeScreen.GetComponent<Image>();
+        FadeStatus = FadeStatus.None;
     }
 
     void Update()
@@ -40,6 +49,44 @@ public class UIManager : MonoBehaviour
         UpdateHealthDisplay();
         UpdateStaminaDisplay();
         UpdateCoinDisplay();
+        UpdateFade();
+    }
+
+    public bool IsFading => FadeStatus != FadeStatus.None;
+
+    public void UpdateFade()
+    {
+        if (FadeStatus == FadeStatus.None)
+            return;
+
+        float alpha = _fadeImage.color.a;
+
+        if (FadeStatus == FadeStatus.ToBlack)
+        {
+            if (alpha < 1f)
+            {
+                alpha = Mathf.Min(alpha + (Time.deltaTime * _fadeSpeed), 1f);
+                _fadeImage.SetAlpha(alpha);
+            }
+            else
+            {
+                FadeStatus = FadeStatus.None;
+                SceneInit.LoadTransitionScene(FadeFromBlack);
+            }
+        }
+        else if (FadeStatus == FadeStatus.FromBlack)
+        {
+            if (alpha > 0f)
+            {
+                alpha = Mathf.Max(alpha - (Time.deltaTime * _fadeSpeed), 0f);
+                _fadeImage.SetAlpha(alpha);
+            }
+            else
+            {
+                FadeStatus = FadeStatus.None;
+                this.FadeScreen.SetActive(false);
+            }
+        }
     }
 
     // This is not a good way to do it, use the ScriptableObject variables thing...
@@ -81,5 +128,25 @@ public class UIManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void FadeToBlack()
+    {
+        if (FadeStatus != FadeStatus.None)
+            return;
+
+        FadeStatus = FadeStatus.ToBlack;
+        _fadeImage.SetAlpha(0f);
+        this.FadeScreen.SetActive(true);
+    }
+
+    public void FadeFromBlack()
+    {
+        if (FadeStatus != FadeStatus.None)
+            return;
+
+        FadeStatus = FadeStatus.FromBlack;
+        _fadeImage.SetAlpha(1f);
+        this.FadeScreen.SetActive(true);
     }
 }
