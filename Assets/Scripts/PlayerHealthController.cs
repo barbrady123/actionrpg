@@ -25,6 +25,7 @@ public class PlayerHealthController : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -45,7 +46,7 @@ public class PlayerHealthController : MonoBehaviour
         }
     }
 
-    public int Damage(int dmg)
+    public int Damage(int dmg, bool invulnerabilityFrames = true)
     {
         if (_invincibilityTime > 0f)
             return 0;
@@ -55,7 +56,10 @@ public class PlayerHealthController : MonoBehaviour
         int actualDmg = (this.CurrentHP >= dmg) ? dmg : this.CurrentHP;
         this.CurrentHP -= actualDmg;
         print($"Player took {actualDmg} damage...");
-        _invincibilityTime = this.InvincibilityDuration;
+        if (invulnerabilityFrames)
+        {
+            _invincibilityTime = this.InvincibilityDuration;
+        }
         return actualDmg;
     }
 

@@ -27,3 +27,12 @@ public enum FadeStatus
 
     FromBlack = 2
 }
+
+public enum CameraMode
+{
+    None = 0,
+
+    AreaBounded = 1,
+
+    TargetLocked = 2
+}

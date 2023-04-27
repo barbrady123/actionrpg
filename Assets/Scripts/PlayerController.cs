@@ -58,7 +58,10 @@ public class PlayerController : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
+
+    public CircleCollider2D Collider => GetComponent<CircleCollider2D>();
 
     public void SpinComplete() { _isSpinning = false; }
 

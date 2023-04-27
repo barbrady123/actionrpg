@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2428685370571681465}
   - component: {fileID: 6725266961783328095}
   m_Layer: 0
-  m_Name: Blob Position
+  m_Name: Shooter Position
   m_TagString: Untagged
-  m_Icon: {fileID: 2800000, guid: 8ef764c674dec114c9b7b446184272af, type: 3}
+  m_Icon: {fileID: 2800000, guid: 25ddd5c9bc2e5724d9f6cd9094c7f2b7, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5717c089923ff514286295bfb9d70a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 1497611963493605573, guid: d4d4b1bf0ba14734d98d7d7ca6398bbe, type: 3}
+  EnemyPrefab: {fileID: 4344650858831285276, guid: f9f585b8a03173a448cd858c87f2a73c, type: 3}

@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour
 
     private Vector2 _moveDirection;
 
+    public bool ShouldShoot;
     public bool ShouldChase;
     private bool _isChasing;
 
@@ -33,6 +34,11 @@ public class EnemyController : MonoBehaviour
     public float KnockbackTime;
     public float KnockbackForce;
 
+    public float FireRate;
+    private float _fireTimer;
+
+    public GameObject Bullet;
+
     public void Knockback(Vector2 direction)
     {
         _knockbackCounter = this.KnockbackTime;
@@ -49,6 +55,7 @@ public class EnemyController : MonoBehaviour
         _area = GetComponentInParent<BoxCollider2D>();
         _timer = this.WaitTime;
         _isMoving = false;
+        _fireTimer = this.FireRate;
     }
 
     private void Update()
@@ -63,6 +70,11 @@ public class EnemyController : MonoBehaviour
         {
             Chase();
             return;
+        }
+
+        if (this.ShouldShoot)
+        {
+            HandleShooting();
         }
 
         if (_timer > 0)
@@ -92,6 +104,17 @@ public class EnemyController : MonoBehaviour
         }
 
         _animator.SetBool("isMoving", _isMoving);
+    }
+
+    private void HandleShooting()
+    {
+        _fireTimer -= Time.deltaTime;
+
+        if (_fireTimer <= 0f)
+        {
+            _fireTimer = this.FireRate;
+            Instantiate(this.Bullet, transform.position, Quaternion.identity);
+        }
     }
 
     private void Chase()

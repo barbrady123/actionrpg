@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AreaActivator : MonoBehaviour
@@ -8,43 +10,109 @@ public class AreaActivator : MonoBehaviour
     private EnemyPosition[] _enemyPositions;
     private List<GameObject> _enemies;
 
+    public bool LockDoors;
+
+    private bool _doorsActivated;
+    private bool _enemiesSpawned;
+
+    private List<GameObject> _doors = new List<GameObject>();
+
+
     // Start is called before the first frame update
     void Start()
     {
         _areaBox = GetComponent<BoxCollider2D>();
         _enemyPositions = GetComponentsInChildren<EnemyPosition>();
         _enemies = new List<GameObject>(_enemyPositions.Length);
+        _doorsActivated = false;
+        _enemiesSpawned = false;
+
+        if (this.LockDoors && _enemyPositions.Any())
+        {
+            var doors = transform.Find("Doors");
+            if (doors != null)
+            {
+                foreach (var door in doors.GetComponentsInChildren<Door>(true))
+                {
+                    _doors.Add(door.gameObject);
+                }
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (!_doors.Any() || !_enemiesSpawned)
+            return;
+
+        print("update with doors and enemies spawned");
+
+        if (!_doorsActivated)
+        {
+            print("about to activate doors");
+            ActivateDoors();
+            return;
+        }
+
+        print("gonna check to see if all enemies are dead");
+        if (_enemies.All(x => x == null))
+        {
+            print("all enemies dead, deactivating doors");
+            DeactivateDoors();
+        }
+    }
+
+    private void ActivateDoors()
+    {
+        print("activate doors");
+        if (_doors.Any(x => x.GetComponent<BoxCollider2D>().Intersects2d(PlayerController.Instance.Collider)))
+            return;
+
+        _doorsActivated = true;
+        _doors.ForEach(x => x.SetActive(true));
+        print("doors activated");
+    }
+
+    private void DeactivateDoors()
+    {
+        print("deactivate doors");
+        _doors.ForEach(x => x.SetActive(false));
+        // _doors.ForEach(x => Destroy(x));
+        // _doors.Clear();
     }
 
     private void OnTriggerEnter2D(Collider2D obj)
     {
         if (obj.tag != Global.Tags.Player)
             return;
+        print($"trigger enter area: {name}");
 
         SpawnEnemies();
-        Camera.main.GetComponent<CameraController>().AreaBox = _areaBox;
+        CustomCameraController.Instance.EnteringArea(_areaBox);
     }
 
     private void OnTriggerExit2D(Collider2D obj)
-    {
+    {        
         if (obj.tag != Global.Tags.Player)
             return;
+        print($"trigger exit area: {name}");
 
         // If the player died, just let the mobs hang out...
         if (PlayerHealthController.Instance.CurrentHP <= 0)
             return;
 
+        CustomCameraController.Instance.SwitchArea();
         DespawnEnemies();
     }
 
     private void DespawnEnemies()
     {
+        if (_enemies.Any())
+        {
+            print("despawn enemies");
+        }
+
         _enemies.ForEach(x => Destroy(x.gameObject));
         _enemies.Clear();
     }
@@ -52,6 +120,12 @@ public class AreaActivator : MonoBehaviour
     private void SpawnEnemies()
     {
         _enemies.Clear();
+
+        if (_enemyPositions.Any())
+        {
+            print("spawn enemies");
+        }
+
         
         foreach (var enemyPos in _enemyPositions)
         {
@@ -63,7 +137,9 @@ public class AreaActivator : MonoBehaviour
             enemy.transform.parent = enemyPos.transform;
 
             _enemies.Add(enemy);
-                
+            print("enemy added");
+            _enemiesSpawned = true;
+            print("enemiesSpawned = true");
         }
     }
 }
