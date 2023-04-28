@@ -10,21 +10,28 @@ public class DamageEnemy : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     void Update()
     {
-        
+
     }
+
+    private void SpawnHitEffect() => Instantiate(this.HitEffect, transform.position, transform.rotation);
 
     private void OnTriggerEnter2D(Collider2D obj)
     {
-        if (obj.tag != Global.Tags.Enemy)
-            return;
-
-        obj.GetComponent<EnemyHealthController>().Damage(this.Damage);
-        obj.GetComponent<EnemyController>().Knockback(obj.transform.position - transform.position);
-        Instantiate(this.HitEffect, transform.position, transform.rotation);
+        if (obj.tag == Global.Tags.Enemy)
+        {
+            obj.GetComponent<EnemyHealthController>().Damage(this.Damage);
+            obj.GetComponent<EnemyController>().Knockback(obj.transform.position - transform.position);
+            SpawnHitEffect();
+        }
+        else if (obj.tag == Global.Tags.Breakable)
+        {
+            obj.GetComponent<BreakableObject>().Break();
+            SpawnHitEffect();
+        }
     }
 }

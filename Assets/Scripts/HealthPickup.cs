@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HealthPickup : MonoBehaviour
@@ -5,6 +6,8 @@ public class HealthPickup : MonoBehaviour
     public int Health;
 
     public float DespawnTime = 10.0f;
+
+    private float _waitTime = 0.5f;
 
     private void Start()
     {
@@ -14,9 +17,20 @@ public class HealthPickup : MonoBehaviour
         Destroy(gameObject, this.DespawnTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D obj)
+    private void Update()
+    {
+        if (_waitTime > 0f)
+        {
+            _waitTime -= Time.deltaTime;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D obj)
     {
         if (obj.tag != Global.Tags.Player)
+            return;
+
+        if (_waitTime > 0f)
             return;
 
         AudioManager.Instance.PlaySFX(SFX.HealthPickup);

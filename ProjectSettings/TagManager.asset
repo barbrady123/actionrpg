@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Breakable
   layers:
   - Default
   - TransparentFX
@@ -48,9 +49,9 @@ TagManager:
   - name: Enemy
     uniqueID: 2849226041
     locked: 0
-  - name: Player
-    uniqueID: 2063357283
-    locked: 0
   - name: Pickups
     uniqueID: 2080931893
+    locked: 0
+  - name: Player
+    uniqueID: 2063357283
     locked: 0
