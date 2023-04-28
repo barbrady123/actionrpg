@@ -122,12 +122,14 @@ public class AreaActivator : MonoBehaviour
     {
         _enemies.Clear();
 
+        _enemyPositions = _enemyPositions.Where(x => x != null).ToArray();
+
         if (_enemyPositions.Any())
         {
             print("spawn enemies");
         }
 
-        foreach (var enemyPos in _enemyPositions.Where(x => !x.Killed))
+        foreach (var enemyPos in _enemyPositions)
         {
             var enemy = Instantiate(
                 enemyPos.EnemyPrefab,

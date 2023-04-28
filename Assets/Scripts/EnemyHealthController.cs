@@ -49,7 +49,7 @@ public class EnemyHealthController : MonoBehaviour
             }
         }
 
-        _spawn.Killed = true;
+        Destroy(_spawn.gameObject);
         Destroy(gameObject);
     }
 }
