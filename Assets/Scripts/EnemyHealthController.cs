@@ -13,9 +13,11 @@ public class EnemyHealthController : MonoBehaviour
 
     public int PickupDropChance;
 
+    private EnemyPosition _spawn;
+
     void Start()
     {
-
+        _spawn = GetComponentInParent<EnemyPosition>();
     }
 
     private void Update()
@@ -47,6 +49,7 @@ public class EnemyHealthController : MonoBehaviour
             }
         }
 
+        _spawn.Killed = true;
         Destroy(gameObject);
     }
 }

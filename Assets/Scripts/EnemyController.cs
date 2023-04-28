@@ -149,7 +149,7 @@ public class EnemyController : MonoBehaviour
         _isChasing = false;
         _isMoving = false;
         _timer = this.WaitAfterHitting;
-        
+
         PlayerHealthController.Instance.Damage(GenerateDamage());
         PlayerController.Instance.Knockback(_rigidBody.velocity);
     }

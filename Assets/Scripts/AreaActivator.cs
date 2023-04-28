@@ -15,7 +15,7 @@ public class AreaActivator : MonoBehaviour
     private bool _doorsActivated;
     private bool _enemiesSpawned;
 
-    private List<GameObject> _doors = new List<GameObject>();
+    private List<Door> _doors = new List<Door>();
 
 
     // Start is called before the first frame update
@@ -34,7 +34,7 @@ public class AreaActivator : MonoBehaviour
             {
                 foreach (var door in doors.GetComponentsInChildren<Door>(true))
                 {
-                    _doors.Add(door.gameObject);
+                    _doors.Add(door);
                 }
             }
         }
@@ -66,18 +66,18 @@ public class AreaActivator : MonoBehaviour
     private void ActivateDoors()
     {
         print("activate doors");
-        if (_doors.Any(x => x.GetComponent<BoxCollider2D>().Intersects2d(PlayerController.Instance.Collider)))
+        if (_doors.Any(x => x.Collider.DistanceEx(PlayerController.Instance.Collider) < 0.8f))
             return;
 
         _doorsActivated = true;
-        _doors.ForEach(x => x.SetActive(true));
+        _doors.ForEach(x => x.gameObject.SetActive(true));
         print("doors activated");
     }
 
     private void DeactivateDoors()
     {
         print("deactivate doors");
-        _doors.ForEach(x => x.SetActive(false));
+        _doors.ForEach(x => x.gameObject.SetActive(false));
         // _doors.ForEach(x => Destroy(x));
         // _doors.Clear();
     }
@@ -89,11 +89,12 @@ public class AreaActivator : MonoBehaviour
         print($"trigger enter area: {name}");
 
         SpawnEnemies();
+
         CustomCameraController.Instance.EnteringArea(_areaBox);
     }
 
     private void OnTriggerExit2D(Collider2D obj)
-    {        
+    {
         if (obj.tag != Global.Tags.Player)
             return;
         print($"trigger exit area: {name}");
@@ -126,14 +127,13 @@ public class AreaActivator : MonoBehaviour
             print("spawn enemies");
         }
 
-        
-        foreach (var enemyPos in _enemyPositions)
+        foreach (var enemyPos in _enemyPositions.Where(x => !x.Killed))
         {
             var enemy = Instantiate(
                 enemyPos.EnemyPrefab,
                 enemyPos.transform.position,
                 Quaternion.identity);
-            
+
             enemy.transform.parent = enemyPos.transform;
 
             _enemies.Add(enemy);

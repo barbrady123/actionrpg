@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
 
     public int Coins;
 
+    public CircleCollider2D Collider { get; private set; }
+
     void Awake()
     {
         if ((Instance != null) && (Instance != this))
@@ -59,9 +61,8 @@ public class PlayerController : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        this.Collider = GetComponent<CircleCollider2D>();
     }
-
-    public CircleCollider2D Collider => GetComponent<CircleCollider2D>();
 
     public void SpinComplete() { _isSpinning = false; }
 

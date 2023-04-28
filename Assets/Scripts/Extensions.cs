@@ -36,17 +36,5 @@ public static class Extensions
 
     public static bool IsEnemyTag(this string val) => val == Global.Tags.Enemy;
 
-    public static bool Intersects2d(this Collider2D val, CircleCollider2D other)
-    {
-        /*
-        var obj1BoundsMin = new Vector3(val.center.x - (val.size.x / 2), val.center.y - (val.size.y / 2));
-        var obj1BoundsMax = new Vector3(val.center.x + (val.size.x / 2), val.center.y + (val.size.x / 2));
-        var obj2BoundsMin = new Vector3(other.offset.x - (other.size.x / 2), other.offset.y - (other.size.y / 2));
-        var obj2BoundsMax = new Vector3(other.offset.x + (other.size.x / 2), other.offset.y + (other.size.x / 2));
-
-        return obj1BoundsMin.x <= obj2BoundsMax.x && obj1BoundsMax.x >= obj2BoundsMin.x &&
-               obj1BoundsMin.y <= obj2BoundsMax.y && obj1BoundsMax.y >= obj2BoundsMin.y;
-        */
-        return true;
-    }
+    public static float DistanceEx(this BoxCollider2D coll1, CircleCollider2D coll2) => Vector2.Distance(coll1.transform.position, coll2.transform.position);
 }
