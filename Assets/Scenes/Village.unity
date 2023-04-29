@@ -195,6 +195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dc31cfef337a9f4bac82865861abd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockDoors: 0
+  CustomCameraMode: 0
+  CustomCameraPointMin: {fileID: 0}
+  CustomCameraPointMax: {fileID: 0}
 --- !u!1 &298211273
 GameObject:
   m_ObjectHideFlags: 0
@@ -12848,7 +12852,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2063357283
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: -10
   m_Sprite: {fileID: -1940738496428130850, guid: c25ba3653b932234eb497d7970ab030c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -34531,6 +34535,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dc31cfef337a9f4bac82865861abd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockDoors: 0
+  CustomCameraMode: 0
+  CustomCameraPointMin: {fileID: 0}
+  CustomCameraPointMax: {fileID: 0}
 --- !u!61 &1511533246
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -34822,6 +34830,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dc31cfef337a9f4bac82865861abd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockDoors: 0
+  CustomCameraMode: 0
+  CustomCameraPointMin: {fileID: 0}
+  CustomCameraPointMax: {fileID: 0}
 --- !u!1001 &1652086534
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36805,6 +36817,10 @@ PrefabInstance:
     - target: {fileID: 316496019723410011, guid: fcb57d62d85c2124cb93c75758990eda, type: 3}
       propertyPath: AreaBox
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 316496019723410011, guid: fcb57d62d85c2124cb93c75758990eda, type: 3}
+      propertyPath: DefaultCameraMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5137548678416580015, guid: fcb57d62d85c2124cb93c75758990eda, type: 3}
       propertyPath: m_Name

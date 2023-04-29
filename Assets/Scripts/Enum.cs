@@ -34,5 +34,7 @@ public enum CameraMode
 
     AreaBounded = 1,
 
-    TargetLocked = 2
+    TargetLocked = 2,
+
+    VerticalBounded = 3
 }

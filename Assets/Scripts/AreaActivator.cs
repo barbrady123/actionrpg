@@ -17,6 +17,10 @@ public class AreaActivator : MonoBehaviour
 
     private List<Door> _doors = new List<Door>();
 
+    public CameraMode CustomCameraMode = CameraMode.None;
+    public GameObject CustomCameraPointMin = null;
+    public GameObject CustomCameraPointMax = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -89,7 +93,11 @@ public class AreaActivator : MonoBehaviour
 
         SpawnEnemies();
 
-        CustomCameraController.Instance.EnteringArea(_areaBox);
+        CustomCameraController.Instance.EnteringArea(
+            _areaBox,
+            this.CustomCameraMode,
+            this.CustomCameraPointMin != null ? this.CustomCameraPointMin.transform.position : null,
+            this.CustomCameraPointMax != null ? this.CustomCameraPointMax.transform.position : null);
     }
 
     private void OnTriggerExit2D(Collider2D obj)
