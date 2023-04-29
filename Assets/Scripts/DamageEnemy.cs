@@ -25,7 +25,13 @@ public class DamageEnemy : MonoBehaviour
         if (obj.tag == Global.Tags.Enemy)
         {
             obj.GetComponent<EnemyHealthController>().Damage(this.Damage);
-            obj.GetComponent<EnemyController>().Knockback(obj.transform.position - transform.position);
+
+            var controller = obj.GetComponent<EnemyController>();
+            if (controller != null)
+            {
+                controller.Knockback(obj.transform.position - transform.position);
+            }
+
             SpawnHitEffect();
         }
         else if (obj.tag == Global.Tags.Breakable)

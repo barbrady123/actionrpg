@@ -21,6 +21,8 @@ public class AreaActivator : MonoBehaviour
     public GameObject CustomCameraPointMin = null;
     public GameObject CustomCameraPointMax = null;
 
+    private GameObject _boss;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,8 +31,10 @@ public class AreaActivator : MonoBehaviour
         _enemies = new List<GameObject>(_enemyPositions.Length);
         _doorsActivated = false;
         _enemiesSpawned = false;
+        _boss = GetComponentInChildren<BossController>(true)?.gameObject;
+        print($"_boss:{_boss}");
 
-        if (this.LockDoors && _enemyPositions.Any())
+        if (this.LockDoors && (_enemyPositions.Any() || (_boss != null)))
         {
             var doors = transform.Find("Doors");
             if (doors != null)
@@ -43,7 +47,6 @@ public class AreaActivator : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!_doors.Any() || !_enemiesSpawned)
@@ -129,6 +132,12 @@ public class AreaActivator : MonoBehaviour
     {
         _enemies.Clear();
 
+        if (_boss != null)
+        {
+            _enemies.Add(_boss);
+            _boss.SetActive(true);
+        }
+
         _enemyPositions = _enemyPositions.Where(x => x != null).ToArray();
 
         if (_enemyPositions.Any())
@@ -147,8 +156,12 @@ public class AreaActivator : MonoBehaviour
 
             _enemies.Add(enemy);
             print("enemy added");
+        }
+
+        if (_enemies.Any())
+        {
             _enemiesSpawned = true;
             print("enemiesSpawned = true");
         }
-    }
+        }
 }

@@ -28,7 +28,7 @@ public class BreakableObject : MonoBehaviour
         {
             if (Global.Success(this.PickupDropChance))
             {
-                Instantiate(this.PickupPrefabs.ChooseRandomElement(), transform.position, Quaternion.identity);
+                Instantiate(this.PickupPrefabs.ChooseRandomElement().item, transform.position, Quaternion.identity);
             }
         }
     }
