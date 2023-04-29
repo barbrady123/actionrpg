@@ -16,6 +16,10 @@ public class BossController : MonoBehaviour
 
     private int _currentSpawnIndex;
 
+    private Vector3 _currentTarget;
+
+    public float MoveSpeed = 3f;
+
     void Start()
     {
         _spawnPoints = transform.parent.GetComponentsInChildren<SpawnLocation>().Select(x => x.transform).ToArray();
@@ -33,6 +37,13 @@ public class BossController : MonoBehaviour
             _teleportTimer = this.TimeBetweenTeleports;
             Teleport();
         }
+        else if (_currentTarget != Vector3.zero)
+        {
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                _currentTarget,
+                Time.deltaTime * this.MoveSpeed);
+        }
     }
 
     private void Teleport()
@@ -42,6 +53,7 @@ public class BossController : MonoBehaviour
             _firstSpawn = false;
             transform.position = _spawnPoints[this.InitialSpawnPointIndex].position;
             _teleportTimer = this.TimeBeforeFirstTeleport;
+            _currentTarget = Vector3.zero;
             return;
         }
 
@@ -49,5 +61,9 @@ public class BossController : MonoBehaviour
         transform.position = spawn.position;
         _currentSpawnIndex = selectedIndex;
         AudioManager.Instance.PlaySFX(SFX.Equip);
+
+        (var target, int targetIndex) = _spawnPoints.ChooseRandomElement(_currentSpawnIndex);
+        _currentTarget = target.position;
+        _currentSpawnIndex = targetIndex;
     }
 }
