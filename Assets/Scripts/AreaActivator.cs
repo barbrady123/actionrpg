@@ -17,7 +17,6 @@ public class AreaActivator : MonoBehaviour
 
     private List<Door> _doors = new List<Door>();
 
-
     // Start is called before the first frame update
     void Start()
     {

@@ -68,8 +68,20 @@ public class PlayerController : MonoBehaviour
 
     public void AddCoins(int value)
     {
+        if (value < 0) throw new System.Exception($"{nameof(value)} must be a non-negative integer.  Use RemoveCoins() to subtract coins from player.");
+
         this.Coins += value;
     }
+
+    public bool RemoveCoins(int value)
+    {
+        if (this.Coins < value)
+            return false;
+
+        this.Coins -= value;
+        return true;
+    }
+
     public void AdjustStamina(int amount)
     {
         this.CurrentStamina = Mathf.Clamp(this.CurrentStamina + amount, 0, this.MaxStamina);

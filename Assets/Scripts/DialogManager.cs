@@ -13,6 +13,8 @@ public class DialogManager : MonoBehaviour
     private int _currentLine;
 
     private bool _justOpened;
+    private bool _clickToExit;
+
 
     void Awake()
     {
@@ -46,8 +48,14 @@ public class DialogManager : MonoBehaviour
 
                 if (_currentLine >= this.DialogLines.Length)
                 {
-                    this.DialogBox.SetActive(false);
-                    GameManager.Instance.DialogActive = false;
+                    if (_clickToExit)
+                    {
+                        HideDialog();
+                    }
+                    else
+                    {
+                        _currentLine = this.DialogLines.Length - 1;
+                    }
                     /*
                     if (_questToMark != null)
                     {
@@ -64,8 +72,17 @@ public class DialogManager : MonoBehaviour
         }
     }
 
+    public void HideDialog()
+    {
+        this.DialogBox.SetActive(false);
+        GameManager.Instance.DialogActive = false;
+    }
+
     public void ShowDialog(
-            string[] newLines)
+            string[] newLines,
+            bool clickToExit = true,
+            bool blockMovement = true,
+            bool blockFirstClick = true)
             // string name,
             // string questToMark = null,
             // bool? markComplete = null)
@@ -77,13 +94,14 @@ public class DialogManager : MonoBehaviour
         // markQuestComplete = markComplete ?? false;
 
         _currentLine = 0;
+        _clickToExit = clickToExit;
 
         SetText(this.DialogLines[_currentLine], true);
         this.DialogBox.SetActive(true);
 
-        _justOpened = true;
+        _justOpened = blockFirstClick;
 
-        GameManager.Instance.DialogActive = true;
+        GameManager.Instance.DialogActive = blockMovement;
     }
 
     private void SetText(string line, bool resetSpeaker = false)
@@ -96,26 +114,27 @@ public class DialogManager : MonoBehaviour
         }
         */
 
-        var parts = line.Split(':');
+        var parts = line.Split('|');
 
         // Flag for signs...
-        bool showName = true;
+        bool someoneSpeaking = true;
 
-        /*
         if (parts.Length > 1)
         {
-            showName = parts[0] != Global.Labels.NoChat;
+            someoneSpeaking = parts[0] != Global.Labels.Shop;
+            
+            /*;
             nameBox.SetActive(showName);
 
             nameText.color = GetColor(parts[0]);
             nameText.text = GetName(parts[0]);
+            */
         }
-        */
 
         this.DialogText.text = parts.Last();
         // this.DialogText.alignment = showName ? TextAnchor.UpperLeft : TextAnchor.MiddleCenter;
 
-        this.DialogText.horizontalAlignment = showName ? HorizontalAlignmentOptions.Left : HorizontalAlignmentOptions.Center;
-        this.DialogText.verticalAlignment = showName ? VerticalAlignmentOptions.Top : VerticalAlignmentOptions.Middle;
+        this.DialogText.horizontalAlignment = someoneSpeaking ? HorizontalAlignmentOptions.Left : HorizontalAlignmentOptions.Center;
+        this.DialogText.verticalAlignment = someoneSpeaking ? VerticalAlignmentOptions.Top : VerticalAlignmentOptions.Middle;
     }
 }

@@ -33,6 +33,11 @@ public static class Global
         public const string Breakable = "Breakable";
     }
 
+    public static class Labels
+    {
+        public const string Shop = "Shop";
+    }
+
     public static class Parameters
     {
         public const string Speed = "Speed";
