@@ -35,7 +35,7 @@ public static class Global
 
     public static class Labels
     {
-        public const string Shop = "Shop";
+        public const string None = "None";
     }
 
     public static class Parameters

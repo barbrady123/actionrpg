@@ -19,6 +19,23 @@ public enum SFX
     StaminaPickup = 8
 }
 
+public enum Music
+{
+    Boss = 0,
+
+    Country = 1,
+
+    Dungeon = 2,
+
+    Title = 3,
+
+    Town = 4,
+
+    Victory = 5,
+
+    None = 999
+}
+
 public enum FadeStatus
 {
     None = 0,

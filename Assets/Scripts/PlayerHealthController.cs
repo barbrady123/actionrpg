@@ -73,5 +73,6 @@ public class PlayerHealthController : MonoBehaviour
         Instantiate(this.DeathAnimation, transform.position, Quaternion.identity);
         AudioManager.Instance.PlaySFX(SFX.Death);
         gameObject.SetActive(false);
+        GameManager.Instance.Respawn();
     }
 }

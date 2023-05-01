@@ -121,7 +121,7 @@ public class DialogManager : MonoBehaviour
 
         if (parts.Length > 1)
         {
-            someoneSpeaking = parts[0] != Global.Labels.Shop;
+            someoneSpeaking = parts[0] != Global.Labels.None;
             
             /*;
             nameBox.SetActive(showName);

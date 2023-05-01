@@ -23,6 +23,8 @@ public class AreaActivator : MonoBehaviour
 
     private GameObject _boss;
 
+    public Music AreaMusic = Music.None;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +34,6 @@ public class AreaActivator : MonoBehaviour
         _doorsActivated = false;
         _enemiesSpawned = false;
         _boss = GetComponentInChildren<BossController>(true)?.gameObject;
-        print($"_boss:{_boss}");
 
         if (this.LockDoors && (_enemyPositions.Any() || (_boss != null)))
         {
@@ -66,6 +67,8 @@ public class AreaActivator : MonoBehaviour
         {
             print("all enemies dead, deactivating doors");
             DeactivateDoors();
+            UIManager.Instance.SetBoss(null, null);
+            AudioManager.Instance.PlayMusic(Music.None);
         }
     }
 
@@ -84,14 +87,13 @@ public class AreaActivator : MonoBehaviour
     {
         print("deactivate doors");
         _doors.ForEach(x => x.gameObject.SetActive(false));
-        // _doors.ForEach(x => Destroy(x));
-        // _doors.Clear();
     }
 
     private void OnTriggerEnter2D(Collider2D obj)
     {
         if (obj.tag != Global.Tags.Player)
             return;
+
         print($"trigger enter area: {name}");
 
         SpawnEnemies();
@@ -100,7 +102,8 @@ public class AreaActivator : MonoBehaviour
             _areaBox,
             this.CustomCameraMode,
             this.CustomCameraPointMin != null ? this.CustomCameraPointMin.transform.position : null,
-            this.CustomCameraPointMax != null ? this.CustomCameraPointMax.transform.position : null);
+            this.CustomCameraPointMax != null ? this.CustomCameraPointMax.transform.position : null,
+            this.AreaMusic);
     }
 
     private void OnTriggerExit2D(Collider2D obj)
@@ -136,6 +139,8 @@ public class AreaActivator : MonoBehaviour
         {
             _enemies.Add(_boss);
             _boss.SetActive(true);
+            UIManager.Instance.SetBoss(_boss.GetComponent<EnemyHealthController>(), _boss.name);
+            CustomCameraController.Instance.OverrideMusic(Music.Boss);
         }
 
         _enemyPositions = _enemyPositions.Where(x => x != null).ToArray();

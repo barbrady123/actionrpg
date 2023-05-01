@@ -25,6 +25,11 @@ public class CustomCameraController : MonoBehaviour
     private CameraMode _enteringMode;
     private Vector2? _enteringBoundPointMin;
     private Vector2? _enteringBoundPointMax;
+    private Music _enteringMusic;
+
+    public Music SceneMusic;
+
+    private Music _overrideMusic;
 
     void Awake()
     {
@@ -50,6 +55,8 @@ public class CustomCameraController : MonoBehaviour
         _enteringBoundPointMin = null;
         _enteringBoundPointMax = null;
         _mode = this.DefaultCameraMode;
+        _overrideMusic = Music.None;
+        AudioManager.Instance.PlayMusic(this.SceneMusic);
     }
 
     void LateUpdate()
@@ -91,12 +98,14 @@ public class CustomCameraController : MonoBehaviour
         BoxCollider2D collider,
         CameraMode? enteringMode = null,
         Vector2? enteringBoundPointMin = null,
-        Vector2? enteringBoundPointMax = null)
+        Vector2? enteringBoundPointMax = null,
+        Music enteringAreaMusic = Music.None)
     {
         this.AreaBoxEntering = collider;
         _enteringMode = enteringMode ?? CameraMode.None;
         _enteringBoundPointMin = enteringBoundPointMin;
         _enteringBoundPointMax = enteringBoundPointMax;
+        _enteringMusic = enteringAreaMusic;
 
         if (_betweenAreas)
         {
@@ -124,5 +133,18 @@ public class CustomCameraController : MonoBehaviour
         _mode = _enteringMode == CameraMode.None ? this.DefaultCameraMode : _enteringMode;
         _enteringMode = CameraMode.None;
         _betweenAreas = false;
+
+        if (_overrideMusic != Music.None)
+        {
+            _enteringMusic = _overrideMusic;
+            _overrideMusic = Music.None;
+        }
+
+        AudioManager.Instance.PlayMusic(_enteringMusic == Music.None ? this.SceneMusic : _enteringMusic);
+    }
+
+    public void OverrideMusic(Music music)
+    {
+        _overrideMusic = music;
     }
 }

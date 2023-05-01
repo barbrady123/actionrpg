@@ -53,7 +53,7 @@ Left-Click To Purchase";
             else
             {
                 AudioManager.Instance.PlaySFX(SFX.Beep);
-                ShowDialog($"{Global.Labels.Shop}|NOT ENOUGH COINS!");
+                ShowDialog($"{Global.Labels.None}|NOT ENOUGH COINS!");
             }
         }
     }
@@ -73,7 +73,7 @@ Left-Click To Purchase";
             return;
 
         _itemActive = true;
-        ShowDialog(String.Format($"{Global.Labels.Shop}|{_description}", this.gameObject.name, this.Cost));
+        ShowDialog(String.Format($"{Global.Labels.None}|{_description}", this.gameObject.name, this.Cost));
     }
 
     private void OnTriggerExit2D(Collider2D obj)

@@ -26,6 +26,15 @@ public class UIManager : MonoBehaviour
     private float _fadeSpeed = 1.5f;
     public FadeStatus FadeStatus;
 
+    public Slider BossHealthSlider;
+    public TMP_Text BossHealthText;
+
+    private EnemyHealthController _bossHealth;
+    private int _bossMaxHP;
+
+    public GameObject DeathScreen;
+
+
     void Awake()
     {
         if ((Instance != null) && (Instance != this))
@@ -49,6 +58,7 @@ public class UIManager : MonoBehaviour
         UpdateHealthDisplay();
         UpdateStaminaDisplay();
         UpdateCoinDisplay();
+        UpdateBossHealthDisplay();
         UpdateFade();
     }
 
@@ -99,6 +109,28 @@ public class UIManager : MonoBehaviour
         this.HealthSlider.minValue = 0;
         this.HealthSlider.maxValue = maxHP;
         this.HealthSlider.value = currentHP;
+    }
+
+    public void SetBoss(EnemyHealthController bossHealth, string name)
+    {
+        _bossHealth = bossHealth;
+        _bossMaxHP = _bossHealth?.CurrentHP ?? 0;
+        this.BossHealthText.text = name;
+    }
+
+    public void UpdateBossHealthDisplay()
+    {
+        if (_bossHealth == null)
+        {
+            this.BossHealthSlider.gameObject.SetActive(false);
+        }
+        else
+        {
+            this.BossHealthSlider.gameObject.SetActive(true);
+            this.BossHealthSlider.maxValue = _bossMaxHP;
+            this.BossHealthSlider.minValue = 0f;
+            this.BossHealthSlider.value = _bossHealth.CurrentHP;
+        }
     }
 
     public void UpdateStaminaDisplay()

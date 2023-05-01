@@ -15,6 +15,8 @@ public class EnemyHealthController : MonoBehaviour
 
     private EnemyPosition _spawn;
 
+    public GameObject Reward;
+
     void Start()
     {
         _spawn = GetComponentInParent<EnemyPosition>();
@@ -47,6 +49,11 @@ public class EnemyHealthController : MonoBehaviour
             {
                 Instantiate(this.PickupPrefabs.ChooseRandomElement().item, transform.position, Quaternion.identity);
             }
+        }
+
+        if (this.Reward != null)
+        {
+            this.Reward.SetActive(true);
         }
 
         if (_spawn != null)
