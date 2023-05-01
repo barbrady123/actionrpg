@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     public bool DialogActive { get; set; }
 
+    public float DeathScreenDelay = 1f;
+
     public float DeathRespawnTime = 3f;
 
     void Awake()
@@ -48,12 +50,16 @@ public class GameManager : MonoBehaviour
 
     public void Respawn()
     {
-        UIManager.Instance.DeathScreen.SetActive(true);
         StartCoroutine(RespawnCo());
     }
 
     private IEnumerator RespawnCo()
     {
+        yield return new WaitForSeconds(this.DeathScreenDelay);
+        UIManager.Instance.DeathScreen.SetActive(true);
         yield return new WaitForSeconds(this.DeathRespawnTime);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        PlayerController.Instance.Reset();
+        UIManager.Instance.DeathScreen.SetActive(false);
     }
 }

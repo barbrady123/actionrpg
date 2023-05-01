@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
 
+    public Vector3 SceneStartPosition;
+
     private Rigidbody2D _rigidBody;
     private Animator _animatorPlayer;
     private Animator _animatorSword;
@@ -239,6 +241,12 @@ public class PlayerController : MonoBehaviour
             _knockDir = Vector2.zero;
             return;
         }
+    }
 
+    public void Reset()
+    {
+        gameObject.SetActive(true);
+        PlayerHealthController.Instance.CurrentHP = PlayerHealthController.Instance.MaxHP;
+        transform.position = this.SceneStartPosition;
     }
 }

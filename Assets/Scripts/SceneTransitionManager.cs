@@ -16,6 +16,7 @@ public class SceneTransitionManager : MonoBehaviour
         }
 
         PlayerController.Instance.transform.position = target.transform.position + target.EntryOffset;
+        PlayerController.Instance.SceneStartPosition = PlayerController.Instance.transform.position;
         SceneInit.EntryTransition = null;
     }
 
